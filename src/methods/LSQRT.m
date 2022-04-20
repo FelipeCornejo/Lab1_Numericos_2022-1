@@ -1,5 +1,5 @@
-function [x0, error, operaciones,tiempo] = lsqr(A,b,tol)
-    operaciones = 0;
+function [x0, tiempo] = LSQRT(A,b,tol)
+    iteraciones = 0;
     n=length(A);
     x0=zeros(n,1);
     %(Resolver sistema Ax = b)
@@ -12,10 +12,8 @@ function [x0, error, operaciones,tiempo] = lsqr(A,b,tol)
     w=v;
     fi=beta;
     p=alpha;
-    x1=x0;  
-    operaciones = operaciones + 4*n;
     error = 1;
-    tic;
+    tic
     while error > tol
         x1=x0;
         %Bidiagonalización 
@@ -36,8 +34,13 @@ function [x0, error, operaciones,tiempo] = lsqr(A,b,tol)
         x0= x0+(fi2/pj)*w;
         w= v-(o/pj)*w;
         error = norm(x0-x1);
-        errores = [errores, error];   
-        operaciones = operaciones + 30*n;
+        errores = [errores, error];
+        iteraciones = iteraciones + 1;
+        if iteraciones>100
+            if var(errores(end-10:end)) == 0
+                break;
+            end 
+        end
     end
     tiempo = toc;
     x0 = x0(:,1);

@@ -13,7 +13,7 @@ X1 = [1;1;1];
 
 tol = 10e-10;
 
-[convergencia,errorNormal,errorAbsoluto,errorRelativo,operaciones,iteraciones] = NewtonMulti(F,tol,X1);
+[convergencia,errorNormal,errorAbsoluto,errorRelativo,operaciones] = NewtonMulti(F,tol,X1);
 
 figure;
 plot(errorNormal);
