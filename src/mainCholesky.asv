@@ -6,7 +6,7 @@ b1089 = load('./data/b1089.dat');
 L = cholesky(A1089);
 
 errorChol = norm(L*L' - A1089);
-
+if()
 %Aplicamos progresivo
 Lp = progresivo(L, b1089);
 
@@ -14,8 +14,6 @@ Lp = progresivo(L, b1089);
 x = regresivo(L', Lp);
 %Sacamos el error
 norm(A1089*x - b1089)
-
-%Calculamos el numero de instrucciones
 
 %disp(x)
 
