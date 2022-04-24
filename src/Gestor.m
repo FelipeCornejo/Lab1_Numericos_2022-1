@@ -17,7 +17,7 @@ b1089 = load('b1089.dat');
 tol = 0.0000000001; % e-10
 
 %Tamaño de la matríz
-n = size(A1089,1);
+[n,m] = size(A1089);
 
 %Ingreso de eficiencia por consola.
 %Como la eficiacia + eficacia = 1, entonces eficacia = 1 - eficiencia.
@@ -29,5 +29,11 @@ efica = 1 - efici;
 
 %Se obtienen las propiedades importantes de la matriz para saber que tipo
 %de métodos se podrían realizar.
+%DIMENSIONES
+if n == m
+    way1
 %DISPERCIÓN
 disp = dispercion(A1089,n);
+
+if disp==1
+    

@@ -1,26 +1,25 @@
-clear
-%Se cargan las matrices de 289 x 289
-A289 = load('A289.dat');
-b289 = load('b289.dat');
-%Se cargan las matrices de 1089 x 1089
-A1089 = load('A1089.dat');
-b1089 = load('b1089.dat');
+function [errores1089,erroresPeso1089,tiempos1089,tiemposPeso1089] = main1089(A1089,b1089,n,tol,iters,nombres)
 
-tol = 0.0000000001; % e-10
-n = 1089;
+disp("Empecé 1089");
 
-%-------------%
-%---ERRORES---%
-%-------------%
-[iteracionesGJ, solucionesGJ, errorGJ] = GaussJacobiE(A1089, b1089, n, tol);
+[iteracionesGJ, solucionesGJ, errorGJ] = GaussJacobiE(A1089, b1089, n, iters);
 [iteracionesLU, solucionesLU, errorLU] = LUDoolittleE(A1089, b1089);
 [solucionesLSQR, errorLSQR] = LSQRE(A1089,b1089,tol);
+[solucionesLSQRD, errorLSQRD] = LSQRDE(A1089,b1089,tol);
 [solucionesCh, errorCh] = CholeskyE(A1089,b1089);
+[solucionesGS,errorGS] = GramSchmidthE(A1089,b1089);
+[solucionesGSe,errorGSe] = GaussSeidelE(A1089,b1089,n,iters);
 
-nombres = categorical({'Gauss-Jacobi','LU','LSQR','Cholesky'});
+[solucionesGJ, tiempoGJ] = GaussJacobiT(A1089, b1089, n, iters);
+[solucionesLU, tiempoLU] = LUDoolittleT(A1089, b1089);
+[solucionesLSQR, tiempoLSQR] = LSQRT(A1089,b1089,tol);
+[solucionesLSQRD, tiempoLSQRD] = LSQRDT(A1089,b1089,tol);
+[solucionesCh, tiempoCh] = CholeskyT(A1089,b1089);
+[solucionesGS,tiempoGS] = GramSchmidthT(A1089,b1089);
+[tiempoGSe,tiempoGSe] = GaussSeidelT(A1089,b1089,n,iters);
 
-%Errores
-errores1089 = [errorGJ, errorLU, errorLSQR, errorCh];
+%Errores 1089
+errores1089 = [errorGJ, errorGSe, errorLU, errorCh, errorGS, errorLSQR, errorLSQRD];
 figure
 hold on
 bar(nombres,errores1089)
@@ -29,7 +28,7 @@ ylabel('Error')
 xlabel('Nombre del método')
 hold off
 
-%Errores peso
+%Errores peso 1089
 maxiE = max(errores1089);
 erroresPeso1089 = errores1089/maxiE;
 figure
@@ -40,16 +39,8 @@ ylabel('Error')
 xlabel('Nombre del método')
 hold off
 
-%-------------%
-%---TIEMPOS---%
-%-------------%
-[solucionesGJ, tiempoGJ] = GaussJacobiT(A1089, b1089, n, tol);
-[solucionesLU, tiempoLU] = LUDoolittleT(A1089, b1089);
-[solucionesLSQR, tiempoLSQR] = LSQRT(A1089,b1089,tol);
-[solucionesCh, tiempoCh] = CholeskyT(A1089,b1089);
-
 %Costo Temporal
-tiempos1089 = [tiempoGJ, tiempoLU, tiempoLSQR, tiempoCh];
+tiempos1089 = [tiempoGJ, tiempoGSe, tiempoLU, tiempoCh, tiempoGS, tiempoLSQR, tiempoLSQRD];
 figure
 hold on
 bar(nombres,tiempos1089)
@@ -68,3 +59,6 @@ title('Costo espacial y temporal de cada método para matriz 1089 x 1089')
 ylabel('Número de operaciones')
 xlabel('Nombre del método y su costo temporal')
 hold off
+
+disp("Terminé 1089");
+end

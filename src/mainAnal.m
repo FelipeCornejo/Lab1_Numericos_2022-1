@@ -11,81 +11,26 @@ b4225 = load('b4225.dat');
 
 tol = 0.0000000001; % e-10
 
+iter289 = 400;
+iter1089 = 1500;
+iter4225 = 3000;
+
 n289 = 289;
 n1089 = 1089;
 n4225 = 4225;
 
-%-------------%
-%---ERRORES---%
-%-------------%
+nombres = categorical({'Gauss.Jacobi', 'Gauss.Seidel', 'LU', 'Cholesky', 'QR', 'LSQR', 'LSQR-Disperso'});
 
 %n = 289
-[iteracionesGJ, solucionesGJ, errorGJ] = GaussJacobiE(A289, b289, n, tol);
-[iteracionesLU, solucionesLU, errorLU] = LUDoolittleE(A289, b289);
-[solucionesLSQR, errorLSQR] = LSQRE(A289,b289,tol);
-[solucionesCh, errorCh] = CholeskyE(A289,b289);
+[errores289,erroresPeso289,tiempos289,tiemposPeso289] = main289(A289,b289,n289,tol,iter289,nombres);
 
 %n = 1089
-[iteracionesGJ, solucionesGJ, errorGJ] = GaussJacobiE(A1089, b1089, n, tol);
-[iteracionesLU, solucionesLU, errorLU] = LUDoolittleE(A1089, b1089);
-[solucionesLSQR, errorLSQR] = LSQRE(A1089,b1089,tol);
-[solucionesCh, errorCh] = CholeskyE(A1089,b1089);
+[errores1089,erroresPeso1089,tiempos1089,tiemposPeso1089] = main1089(A1089,b1089,n1089,tol,iter1089,nombres);
 
 %n = 4225
-[iteracionesGJ, solucionesGJ, errorGJ] = GaussJacobiE(A4225, b4225, n, tol);
-[iteracionesLU, solucionesLU, errorLU] = LUDoolittleE(A4225, b4225);
-[solucionesLSQR, errorLSQR] = LSQRE(A4225,b4225,tol);
-[solucionesCh, errorCh] = CholeskyE(A4225,b4225);
+[errores4225,erroresPeso4225,tiempos4225,tiemposPeso4225] = main4225(A4225,b4225,n4225,tol,iter4225,nombres);
 
-
-nombres = categorical({'Gauss-Jacobi','LU','LSQR','Cholesky'});
-
-%Errores 1089
-errores1089 = [errorGJ, errorLU, errorLSQR, errorCh];
-figure
-hold on
-bar(nombres,errores1089)
-title('Error de cada método para matriz 1089 x 1089')
-ylabel('Error') 
-xlabel('Nombre del método')
-hold off
-
-%Errores peso 1089
-maxiE = max(errores1089);
-erroresPeso1089 = errores1089/maxiE;
-figure
-hold on
-bar(nombres,erroresPeso1089)
-title('Error de cada método para matriz 1089 x 1089')
-ylabel('Error') 
-xlabel('Nombre del método')
-hold off
-
-%-------------%
-%---TIEMPOS---%
-%-------------%
-[solucionesGJ, tiempoGJ] = GaussJacobiT(A1089, b1089, n1089, tol);
-[solucionesLU, tiempoLU] = LUDoolittleT(A1089, b1089);
-[solucionesLSQR, tiempoLSQR] = LSQRT(A1089,b1089,tol);
-[solucionesCh, tiempoCh] = CholeskyT(A1089,b1089);
-
-%Costo Temporal
-tiempos1089 = [tiempoGJ, tiempoLU, tiempoLSQR, tiempoCh];
-figure
-hold on
-bar(nombres,tiempos1089)
-title('Costo espacial y temporal de cada método para matriz 1089 x 1089')
-ylabel('Número de operaciones')
-xlabel('Nombre del método y su costo temporal')
-hold off
-
-%Costo Temporal Peso
-maxiT = max(tiempos1089);
-tiemposPeso1089 = tiempos1089/maxiT;
-figure
-hold on
-bar(nombres,tiemposPeso1089)
-title('Costo espacial y temporal de cada método para matriz 1089 x 1089')
-ylabel('Número de operaciones')
-xlabel('Nombre del método y su costo temporal')
-hold off
+analError = [errores289;errores1089;errores4225];
+analTiempo = [tiempos289;tiempos1089;tiempos4225];
+analPesoError = [erroresPeso289;erroresPeso1089;erroresPeso4225];
+analPesoTiempo = [tiemposPeso289;tiemposPeso1089;tiemposPeso4225];

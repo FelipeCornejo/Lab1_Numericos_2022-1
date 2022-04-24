@@ -1,4 +1,5 @@
 function [ans] = dispercion(A,n)
+
 %Obtiene el grado de disperción y devuelve un bool en relación si la matriz
 %es dispersa o no.
 
