@@ -1,0 +1,39 @@
+classdef StrategyType
+% Interface / Abstract Class 
+% This class must be inherited. The child class must deliver the
+% RunStrategy method that accept the TimeSeries class
+
+   properties
+   end
+
+   methods (Abstract)
+       RunStrategy(A,b,tol,)
+   end
+   
+   methods (Static)
+       function rslt = newType(value)
+          switch lower(value)
+              case 1
+                  rslt = GaussSeidel;
+              case 2
+                  rslt = LUDoolittle;
+              case 6
+                  rslt = LSQRD;
+              case 5
+                  rslt = LSQR;
+              case 4
+                  rslt = GramSchmidth;
+              case 3
+                  rslt = Cholesky;
+              
+                % If you want to add more strategies, simply put them in
+                % here and then create another class file that inherits
+                % this class and implements the RunStrategy method
+              otherwise
+                  error('El tipo tiene que ser un numero del 1 al 6');
+          end
+       end
+   end
+end 
+
+%EOF
